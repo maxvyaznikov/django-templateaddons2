@@ -1,0 +1,71 @@
+######
+Assign
+######
+
+The "assign" template tag library provides 1 template tag:
+
+* assign: captures the output of template code and saves it in a context
+  variable. Requires a {% endassign %} closing tag.
+
+******
+assign
+******
+
+The {% assign %} template tag is useful when you want to capture some template
+code output and use the result later.
+
+It captures whatever is between the {% assign %} and {% endassign %} pair.
+
+It takes two optional input parameters:
+
+* name. A string. The context variable name where to store the result. Defaults 
+  to "assign".
+* silent. A boolean. Whether to only capture the output or both capture and 
+  display it. Defaults to False.
+
+The following template code:
+
+.. code-block:: django
+
+  {% load assign %}
+  {% assign name="sample_code" %}1234{% endassign %}
+  5678
+  {{ sample_code }}
+
+... gives the following output:
+
+.. code-block:: html
+  
+  5678
+  1234
+
+Note: the {% assign %} template tag allows you to override the value of an 
+existing context variable, so choose the "name" parameter with care.
+
+The default value for the "name" parameter is "assign". This means that we
+could have written the previous example as below:
+
+.. code-block:: django
+
+  {% load assign %}
+  {% assign %}1234{% endassign %}
+  5678
+  {{ assign }}
+
+You can set the "silent" parameter to False if you want to capture and display
+the output at the same time. The following template code:
+
+.. code-block:: django
+
+  {% load assign %}
+  {% assign name="sample_code" silent=0 %}1234{% endassign %}
+  5678
+  {{ sample_code }}
+
+... gives the following output:
+
+.. code-block:: html
+  
+  1234
+  5678
+  1234

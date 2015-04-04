@@ -1,0 +1,35 @@
+#######
+Counter
+#######
+
+The "counter" template tag library provides 2 template tags:
+
+* counter: increments a counter on each call
+
+*******
+counter
+*******
+
+The {% counter %} template tag is useful when you want to use a custom counter.
+It can be used outside a specific loop, or used over multiple loops...
+
+The {% counter %} template tag accepts several optional parameters:
+
+* name. A string. It identifies the counter. Default value is 'default'.
+* start. An integer. The value of the counter at the very first call. Default
+  value is 0.
+* step. An integer. The increment or decrement amount. Default value is 1.
+* ascending. A boolean. Whether the counter is incremented (True) or 
+  decremented (False). Default value is True.
+* silent. Whether to render (False) or not (True) the current counter value.
+  Default value is False.
+* assign. A string. If not empty, the current value of the counter is assigned
+  to the context variable with the corresponding name. Default value is "" (do
+  not assign).
+
+Notice that the start, ascending and step values are only parsed on counter
+initialization.
+
+The list of available counters is stored in the context, under the variable 
+name settings.TEMPLATEADDONS_COUNTERS_VARIABLE, which is 
+"_templateaddons_counters" by default.

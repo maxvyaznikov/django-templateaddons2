@@ -1,0 +1,39 @@
+#######
+Resolve
+#######
+
+Template tags:
+
+* resolve: tag is to resolve variable names
+
+* call: tag is to call functions with parameters
+
+
+*******
+resolve
+*******
+
+This template tag was took from this answer:
+http://stackoverflow.com/a/13771503/2261861 And can be used in such cases:
+
+.. code-block:: django
+
+    {% resolve some_list some_index as value %}
+    {% resolve some_dict some_dict_key as value %}
+
+...
+
+
+*******
+call
+*******
+
+This template tag was created because of default django behavior with functions.
+You can call it only without parameters or create a tag on it. So, now we can
+pass arguments into `call`-tag and receive result as variable.
+
+.. code-block:: django
+
+    {% call context.fn arg1 arg2 as value %}
+
+...

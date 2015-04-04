@@ -1,0 +1,82 @@
+#######
+Heading
+#######
+
+The "heading" template tag library provides 1 template tag:
+
+* headingcontext: helps you manage heading levels in HTML code. Requires a
+  {% endheadingcontext %} closing tag.
+
+**************
+headingcontext
+**************
+
+With cascading templates, includes and bases, some parts of template code
+could be reused in different heading contexts.
+
+As an example, consider the following "home page" code in home.html:
+
+.. code-block:: html
+
+  <h1>My beautiful website</h1>
+  <h2>News</h2>
+  <p>... links to news ...</p>
+
+And consider the following "news page" code in news.html
+
+.. code-block:: html
+
+  <h1>News</h1>
+  <p>... links to news ...</p>
+
+You cannot reuse (include) news.html code into home.html, because the heading
+level does not match.
+
+The "headingcontext" template tag allows you to solve this problem.
+Here is modified home.html:
+
+.. code-block:: django
+
+  {% load heading %}
+  <h1>My beautiful website</h1>
+  {% headingcontext %}
+  {% include "news.html" %}
+  {% endheadingcontext %}
+
+Ok. Now, what if the news.html code was using h5 in place of h1 like that:
+
+.. code-block:: html
+
+  <h5>News</h5>
+  <p>... links to news ...</p>
+
+You can use the additional "source_level" parameter in home.html:
+
+.. code-block:: django
+
+  {% load heading %}
+  <h1>My beautiful website</h1>
+  {% headingcontext source_level=5 %}
+  {% include "news.html" %}
+  {% endheadingcontext %}
+
+This causes all heading of level 5 and greater in news.html to be relative
+to the current heading level (2).
+
+You can use nested {% headingcontext %}{% endheadingcontext %} calls. As an
+example, news.html could be:
+
+.. code-block:: django
+
+  <h5>News</h5>
+  <p>... links to news ...</p>
+  {% load heading %}
+  {% headingcontext source_level=3 target_level=6 %}
+  {% include "another_template_fragment_which_contains_some_h3.html" %}
+  {% endheadingcontext %}
+
+Notice the use of the additional "target_level" parameter, which forces 
+ouput levels to start at 6.
+
+You can read the provided test cases to observe what does this template tag at
+tests.HeadingContextTemplateTagTestCase.

@@ -1,0 +1,162 @@
+##########
+Javascript
+##########
+
+The "javascript" template tag library provides 3 template tags:
+
+* javascript_assign: registers some Javascript code. Requires a 
+  {% endjavascript_assign %} closing tag. 
+* javascript_render: displays all registered Javascript code
+* javascript_reset: empties the Javascript registry
+
+This template tag library has been written to help template designers implement
+the following pattern:
+
+* in templates, write Javascript fragments along with the corresponding HTML
+  code. This is done with the {% javascript_assign %} template tag.
+* display the Javascript code at the end of the HTML document. This is done
+  by calling the {% javascript_render %} template tag at the end of the HTML
+  document.
+* remove duplicate code fragments, e.g. do not call the same library twice.
+  This is done by the {% javascript_render %} template tag. Notice that, at
+  this time, only *strict* duplicates are ignored (i.e. if two Javascript 
+  fragments have whitespace or attributes order differences, they won't be
+  considered as duplicate, even if they have the same meaning), so you may
+  have to respect some coding conventions about Javascript.
+
+The main advantage of this template tag is that you can manage Javascript code 
+on a per-template basis. You no longer have to maintain both a specific 
+template for HTML code and a global template for all Javascript calls.
+
+Let's review an example. We have 3 templates:
+
+* base.html: the base template
+* menu.html: include that display menus
+* home.html: called when requesting / URL
+
+base.html, template code:
+
+.. code-block:: django
+
+  <html>
+    {% load javascript %}
+    <head>
+  {% javascript_assign %}<script type="text/javascript" src="/first_lib.js" />{% endjavascript_assign %}
+  {% javascript_assign %}
+  <script type="text/javascript">
+      /* some javascript code that uses "first_lib.js" */
+      var a = 1;
+      /* Notice that the "left aligned" indentation helps avoiding whitespace differences between two code fragments. */
+  </script>
+  {% endjavascript_assign %}
+    </head>
+    <body>
+      <div id="menu">
+        {% include "menu.html" %}
+      </div>
+      <div id="content">
+        {% block content %}{% endblock content %}
+      </div>
+      <!--  JAVASCRIPT CODE -->
+      {% javascript_render %}
+    </body>
+  </html>
+
+menu.html, template code:
+
+.. code-block:: django
+
+  {% load javascript %}
+  {% javascript_assign %}<script type="text/javascript" src="/second_lib.js" />{% endjavascript_assign %}
+  {% javascript_assign %}
+  <script type="text/javascript">
+      /* some javascript code that uses "second_lib.js" */
+      var b = 2;
+  </script>
+  {% endjavascript_assign %}
+  <ul>
+    <li><a href="/">Home</a></li>
+    <!-- the menu... -->
+  </ul>
+
+home.html, template code:
+
+.. code-block:: django
+
+  {% extends "base.html" %}
+  {% load javascript %}
+  
+  {% block content %}
+  {% javascript_assign %}<script type="text/javascript" src="/first_lib.js" />{% endjavascript_assign %}
+  {% javascript_assign %}<script type="text/javascript" src="/second_lib.js" />{% endjavascript_assign %}
+  {% javascript_assign %}<script type="text/javascript">
+      /* some javascript code that uses both "first_lib.js" and "second_lib.js" */
+      var c = 3;
+  </script>
+  {% endjavascript_assign %}
+  <p>This is the content</p>
+  {% endblock content %}
+
+HTML output when requesting / URL (indentation and linebreaks have been 
+cleaned for improved lisibility):
+
+.. code-block:: html
+
+  <html>
+    <head>
+    </head>
+    <body>
+      <div id="menu">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <!-- the menu... -->
+        </ul>
+      </div>
+      <div id="content">
+        <p>This is the content</p>
+      </div>
+      <!--  JAVASCRIPT CODE -->
+      <script type="text/javascript" src="/first_lib.js" />
+      <script type="text/javascript">
+          /* some javascript code that uses "first_lib.js" */
+          var a = 1;
+          /* Notice that the "left aligned" indentation helps avoiding whitespace differences between two code fragments. */
+      </script>
+      <script type="text/javascript" src="/second_lib.js" />
+      <script type="text/javascript">
+          /* some javascript code that uses "second_lib.js" */
+          var b = 2;
+      </script>
+      <script type="text/javascript">
+          /* some javascript code that uses both "first_lib.js" and "second_lib.js" */
+          var c = 3;
+      </script>
+    </body>
+  </html>
+
+As you can see in the example above, the content of each {% javascript_assign %}
+block has been saved. Then the {% javascript_render %} call removes duplicates
+and displays all the code fragments, by order of appearance.
+
+*****************
+javascript_assign
+*****************
+
+Use it as container of each Javascript code fragment needed in your templates.
+You should create separate {% javascript_assign %} blocks for each call to a
+Javascript library.
+
+*****************
+javascript_render
+*****************
+
+Use it to render the Javascript code fragments *previously* registered in
+{% javascript_assign %} blocks.
+
+****************
+javascript_reset
+****************
+
+Call it to empty the Javascript code fragments *previously* registered in
+{% javascript_assign %} blocks. In general use case, you display Javascript
+code once, so you do not need to use this tag.

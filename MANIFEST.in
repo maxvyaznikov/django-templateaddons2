@@ -1,0 +1,5 @@
+include *.txt
+include setup.cfg
+include setup.py
+recursive-include docs *
+recursive-include templateaddons *

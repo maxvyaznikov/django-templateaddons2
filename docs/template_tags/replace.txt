@@ -1,0 +1,70 @@
+#######
+Replace
+#######
+
+The "replace" template tag library provides 1 template tag and 1 template 
+filter.
+
+Template tag:
+
+* replace: replaces a string by another in the content of the block. Requires a 
+  {% endreplace %} closing tag.
+
+Template filter:
+
+* escape_regexp: makes it possible to escape a regular expression special 
+  characters in a string. 
+
+*******
+replace
+*******
+
+This template tag provides a simple string replacement functionality. The
+following template code...:
+
+.. code-block:: django
+
+  {% load replace %}
+  {% replace search="pa" replacement="to" %}pamato{% endreplace %}
+
+... gives the following output:
+
+.. code-block:: html
+
+  tomato
+
+The "search" parameter is considered as a regular expression by default
+(options re.UNICODE and re.DOTALL are enabled).
+
+If you do not want to use regular expression, use the enable_regexp=0 
+parameter. The following template code...:
+
+.. code-block:: django
+
+  {% load replace %}
+  {% replace search="(to)" replacement="au" %}(to)to{% endreplace %}
+  {% replace search="(to)" replacement="au" use_regexp=0 %}(to)to{% endreplace %}
+
+... gives the following output:
+
+.. code-block:: html
+
+  (au)au
+  auto
+
+You can also use backreferences in the replacement parameter. The following
+template code...:
+
+.. code-block:: django
+
+  {% load replace %}
+  {% replace search="([a-z]+)" replacement="*\1*" %}123abc456def{% endreplace %}
+
+... gives the following output:
+
+.. code-block:: html
+
+  123*abc*456*def*
+
+Notice, if you write the previous template code in Python code (i.e. as a 
+string), then backreference syntax is \\1 rather than \1.

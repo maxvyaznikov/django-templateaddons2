@@ -1,0 +1,8 @@
+###############
+Developer tools
+###############
+
+See inline documentation for templateaddons.utils.parse_tag_argument() and
+templateaddons.utils.decode_tag_arguments().
+
+Additional documentation is needed.
