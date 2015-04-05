@@ -1,17 +1,15 @@
 Metadata-Version: 1.0
-Name: django-templateaddons
+Name: django-templateaddons2
 Version: 0.1
 Summary: A set of tools for use with templates of the Django framework: additional template tags, context processors and utilities for template tag development.
-Home-page: http://bitbucket.org/benoitbryon/django-templateaddons/
 Author: Benoit Bryon
 Author-email: benoit@marmelune.net
 License: LICENSE
-Download-URL: http://bitbucket.org/benoitbryon/django-templateaddons/get/64c8a482a7dd.zip
 Description: #####################
-        django-templateaddons
+        django-templateaddons2
         #####################
         
-        django-templateaddons is a set of tools for use with Django's templates,
+        django-templateaddons2 is a set of tools for use with Django's templates,
         template tags and context processors. It provides additional template tags,
         context processors and utilities for template tag development.
         
@@ -20,7 +18,7 @@ Description: #####################
         *************
         
         * Read the HTML documentation online at
-        http://packages.python.org/django-templateaddons/
+        http://packages.python.org/django-templateaddons2/
         * Read the RestructuredText documentation in the docs/ folder in the source
         code.
         

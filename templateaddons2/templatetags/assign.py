@@ -1,5 +1,5 @@
 from django import template
-from templateaddons.utils import decode_tag_arguments, parse_tag_argument
+from templateaddons2.utils import decode_tag_arguments, parse_tag_argument
 
 
 register = template.Library()

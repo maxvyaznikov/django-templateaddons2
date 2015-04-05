@@ -1,7 +1,7 @@
 from django import template
 
-from templateaddons.settings import TEMPLATEADDONS_COUNTERS_VARIABLE
-from templateaddons.utils import decode_tag_arguments, parse_tag_argument
+from templateaddons2.settings import TEMPLATEADDONS_COUNTERS_VARIABLE
+from templateaddons2.utils import decode_tag_arguments, parse_tag_argument
 
 
 register = template.Library()

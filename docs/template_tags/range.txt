@@ -1,0 +1,32 @@
+#####
+range
+#####
+
+The "range" template tag library provides 1 filter and 1 tag:
+
+* times: take a number and make it a range
+
+* range: take a number with parameters and pass it into the range function
+
+*****
+times
+*****
+
+::
+
+    {% load range %}
+    {% for i in 15|times %}
+        <li>Item</li>
+    {% endfor %}
+
+*****
+range
+*****
+
+::
+
+    {% load range %}
+    {% range start=1 stop=10 step=2 as odd_range %}
+    {% for i in odd_range %}
+        <li>{{ i }}</li>
+    {% endfor %}

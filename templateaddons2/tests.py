@@ -121,7 +121,7 @@ class JavascriptTemplateTagTestCase(TemplateTagTestCase):
             (u'{% javascript_reset %}', u''), # clear registry
             (u'{% javascript_assign %}1{% endjavascript_assign %}{% javascript_assign %} 1{% endjavascript_assign %}{% javascript_assign %}2{% endjavascript_assign %} - {% javascript_render %}', u' - 1\n 1\n2'), # non strict duplicates are not ignored
             (u'{% javascript_reset %}', u''), # clear registry
-            (u'{% spaceless %}{% include "tests/templateaddons/javascript/home.html" %}{% endspaceless %}', strip_spaces_between_tags(u"""<html>    
+            (u'{% spaceless %}{% include "tests/templateaddons2/javascript/home.html" %}{% endspaceless %}', strip_spaces_between_tags(u"""<html>
 <head>
 </head>
 <body>
@@ -186,5 +186,22 @@ class ReplaceTemplateTagTestCase(TemplateTagTestCase):
             ]
         # add template tag library to template code
         fixtures = [(u'{% load replace %}' + template_code, valid_output) for (template_code, valid_output) in fixtures]            
+        # test real output
+        self.validate_template_code_result(fixtures)
+
+
+
+class RangeTemplateTagTestCase(TemplateTagTestCase):
+    """Tests the {% times %} template tag filter"""
+    def test_output(self):
+        # set up fixtures
+        fixtures = [
+            (u'{{ 3|times }}', u'[0, 1, 2]'), # Display a list
+            (u'{% for i in 3|times %}{{ i }}{% endfor %}', u'012'), # Loop 3 times
+            (u'{% range 3 as r %}{{ r }}', u'[0, 1, 2]'), # Display a list
+            (u'{% range start=3 stop=10 step=4 as r %}{{ r }}', u'[3, 7]'), # Display a list
+            ]
+        # add template tag library to template code
+        fixtures = [(u'{% load range %}' + template_code, valid_output) for (template_code, valid_output) in fixtures]
         # test real output
         self.validate_template_code_result(fixtures)

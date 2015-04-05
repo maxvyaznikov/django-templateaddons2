@@ -3,7 +3,7 @@ import re
 from django import template
 from django.template.defaultfilters import stringfilter
 
-from templateaddons.utils import decode_tag_arguments, parse_tag_argument
+from templateaddons2.utils import decode_tag_arguments, parse_tag_argument
 
 
 register = template.Library()
@@ -33,7 +33,7 @@ class ReplaceNode(template.Node):
         return output
 
 
-@register.tag
+@register.tag(name='replace')
 def replace_tag(parser, token):
     default_arguments = {}
     default_arguments['search'] = u''
