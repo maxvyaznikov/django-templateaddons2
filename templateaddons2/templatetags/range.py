@@ -18,4 +18,4 @@ def range_tag(start=None, stop=None, step=1):
 
 @register.filter()
 def times(value):
-    return range(value)
+    return range(int(value))
